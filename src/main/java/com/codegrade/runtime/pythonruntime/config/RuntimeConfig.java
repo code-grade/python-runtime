@@ -14,6 +14,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @ConfigurationProperties("runtime")
 public class RuntimeConfig {
-    private String pythonCmd = "python";
+    private String pythonCmd = "python3";
     private Long maxTimeLimit = 10L;
 }
