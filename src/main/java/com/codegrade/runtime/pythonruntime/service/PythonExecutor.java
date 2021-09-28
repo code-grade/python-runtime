@@ -1,7 +1,9 @@
 package com.codegrade.runtime.pythonruntime.service;
 
+import com.codegrade.runtime.pythonruntime.config.RuntimeConfig;
 import com.codegrade.runtime.pythonruntime.runtime.ExecOutput;
 import com.codegrade.runtime.pythonruntime.runtime.Executor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -9,13 +11,16 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@AllArgsConstructor
 public class PythonExecutor implements Executor {
+
+    private final RuntimeConfig runtimeConfig;
 
     @Override
     public ExecOutput execute(String source, String input, Double timeLimit) throws IOException, InterruptedException {
         var commands = List.of(
                 "timeout", "-s", "SIGKILL", "-k", "1s", timeLimit.toString(),
-                "python", "-c", source
+                runtimeConfig.getPythonCmd(), "-c", source
         );
         StringBuilder output = new StringBuilder();
 
@@ -40,7 +45,7 @@ public class PythonExecutor implements Executor {
         while ((s = stdError.readLine()) != null) output.append(s).append('\n');
 
         // Wait before force kill
-        proc.waitFor(10, TimeUnit.SECONDS);
+        proc.waitFor(runtimeConfig.getMaxTimeLimit(), TimeUnit.SECONDS);
 
         // Generate output status
         ExecOutput.Status outputStatus;

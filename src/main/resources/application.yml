@@ -12,3 +12,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
     enabled: false
+
+runtime:
+  python-cmd: python
+  max-time-limit: 10
