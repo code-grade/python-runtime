@@ -6,13 +6,13 @@
 name: Release
 
 on:
-  workflow_run:
-    workflows: [ "Test" ]
-    types:
-      - completed
-#  push:
-#    branches:
-#      - master
+#  workflow_run:
+#    workflows: [ "Test" ]
+#    types:
+#      - completed
+  push:
+    branches:
+      - main
 
 jobs:
   build:
